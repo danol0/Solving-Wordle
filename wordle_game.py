@@ -11,6 +11,7 @@ def loadAnswers() :
 
 
 def feedback(guess, answer) :
+    """Returns the coloured text block and regex for filtering for a given guess and answer"""
     feedback = ""
     greenRegex = ""
     yellowRegex = "(?=.*[a-z])"
@@ -34,7 +35,6 @@ def feedback(guess, answer) :
             greenRegex += "."
             yellowRegex += "(?=.*" + guess[i] + ")"
 
-
         #then add all the letters that are wrong to the greys
         else :
             feedback += "\033[0;30;41m" + guess[i]
@@ -45,7 +45,11 @@ def feedback(guess, answer) :
 
     return(feedback,greenRegex,yellowRegex,greyRegex)
 
+
+
 def filterWordlist(greenRegex, yellowRegex, greyRegex, wordlist) :
+    """Filters the wordlist for words that match the given regex"""
+    
     greyPattern = re.compile(greyRegex)
     greyFilter = np.vectorize(lambda x: not bool(re.search(greyPattern,x)))
 
@@ -81,5 +85,3 @@ def game() :
             return True
         
         wordlist = filterWordlist(grR,yR,gR,wordlist)
-
-game()
