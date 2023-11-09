@@ -1,30 +1,33 @@
 import wordle_functions as wf
 
-def wordleHelper() :
-    """Helper program for playing wordle. Suggests the best guess given the current state of the game."""
+# TODO: tidy up loop exits
+
+
+def wordle_helper():
+    """Helper program for playing wordle. Suggests the best guess given the
+      current state of the game."""
 
     pattern = 0
     attempt = 0
-    answerList = wf.loadAnswers()
+    answerList = wf.load_answers()
 
-    while attempt < 6 :
+    while attempt < 6:
 
-        #precomputed best first guess to save time
-        if attempt == 0 :
-            guess = wf.loadFirstGuess()
+        # precomputed best first guess to save time
+        if attempt == 0:
+            guess = wf.load_first_guess()
             print("Computed guess: ", guess)
             attempt += 1
 
-        else :
+        else:
             guess = input("Enter what you guessed: ")
-            pattern = list(map(int, input("Enter the pattern as a number with no spaces: ")))
+            pattern = list(map(int, input("Enter the pattern as a number with "
+                                          "no spaces: ")))
 
-            if pattern == [2,2,2,2,2] :
+            if pattern == [2, 2, 2, 2, 2]:
                 return
-            
-            answerList = wf.filterAnswers(guess,pattern,answerList)
-            bestGuess = wf.returnGuess(answerList)
+
+            answerList = wf.filter_answers(guess, pattern, answerList)
+            bestGuess = wf.return_guess(answerList)
             print("Computed guess: ", bestGuess)
             attempt += 1
-
-wordleHelper()
