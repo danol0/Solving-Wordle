@@ -21,11 +21,13 @@ def load_first_guess():
 
 def filter_answers(guess, pattern, wordlist):
     """Filters answers for just words that match the given guess & pattern"""
+    
     return [a for a in wordlist if generate_pattern(guess, a) == pattern]
 
 
 def pattern_feedback(pattern, guess):
     """Returns the coloured text block output for a given guess and pattern"""
+    
     feedback = ""
     for i in range(5):
 
@@ -76,6 +78,29 @@ def calculate_entropy(distribution_dict):
     probabilities = [x/total for x in observations]
     entropy = -sum([p*np.log2(p) for p in probabilities])
     return entropy
+    
+
+def generate_entropy_dict(possible_answers):
+    """Generates a dictionary of entropies for all legal guesses given a
+    set of possible answers"""
+
+    entropy_dict = {}
+
+    for guess in load_guessable_words():
+        pattern_dist = {}
+
+        # find the distribution of patterns for this guess
+        for answer in possible_answers:
+            pattern = ''.join(str(x) for x in generate_pattern(guess, answer))
+            pattern_dist[pattern] = pattern_dist.get(pattern, 0) + 1
+
+        # calculate the total entropy for this distribution
+        e = calculate_entropy(pattern_dist)
+
+        # add this to the dictionary of entropies for all guesses
+        entropy_dict[guess] = entropy_dict.get(guess, 0) + e
+
+    return entropy_dict
 
 
 def return_guess(possible_answers):
@@ -100,26 +125,3 @@ def return_guess(possible_answers):
     # otherwise return the max entropy guess
     else:
         return max(word_entropies, key=word_entropies.get)
-
-
-def generate_entropy_dict(possible_answers):
-    """Generates a dictionary of entropies for all legal guesses given a
-    set of possible answers"""
-
-    entropy_dict = {}
-
-    for guess in load_guessable_words():
-        pattern_dist = {}
-
-        # find the distribution of patterns for this guess
-        for answer in possible_answers:
-            pattern = ''.join(str(x) for x in generate_pattern(guess, answer))
-            pattern_dist[pattern] = pattern_dist.get(pattern, 0) + 1
-
-        # calculate the total entropy for this distribution
-        e = calculate_entropy(pattern_dist)
-
-        # add this to the dictionary of entropies for all guesses
-        entropy_dict[guess] = entropy_dict.get(guess, 0) + e
-
-    return entropy_dict
