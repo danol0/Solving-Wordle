@@ -1,8 +1,8 @@
-import wordle_functions as wf
+import wordle.tools as wf
 import numpy as np
 
 
-def play_wordle(selfPlay=True, answer=None, verbose=True):
+def wordle_bot(selfPlay=True, answer=None, verbose=True):
     """Plays a game of wordle. If selfPlay is True, uses entropy to make
     guesses and returns the number of attempts it takes to win. If selfPlay is
     False, asks for user input. Verbose is used to control the print statements

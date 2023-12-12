@@ -1,4 +1,4 @@
-import wordle_functions as wf
+import wordle.tools as wf
 
 # TODO: tidy up loop exits
 
@@ -9,7 +9,7 @@ def wordle_helper():
 
     pattern = 0
     attempt = 0
-    answerList = wf.load_answers()
+    answer_list = wf.load_answers()
 
     while attempt < 6:
 
@@ -27,7 +27,7 @@ def wordle_helper():
             if pattern == [2, 2, 2, 2, 2]:
                 return
 
-            answerList = wf.filter_answers(guess, pattern, answerList)
-            bestGuess = wf.return_guess(answerList)
-            print("Computed guess: ", bestGuess)
+            answer_list = wf.filter_answers(guess, pattern, answer_list)
+            best_guess = wf.return_guess(answer_list)
+            print("Computed guess: ", best_guess)
             attempt += 1

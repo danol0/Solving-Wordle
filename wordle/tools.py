@@ -13,21 +13,25 @@ def load_answers():
     return answers
 
 
-def load_first_guess():
-    with open("first_turn_entropies.txt", "r") as file:
-        guess = file.readline()
-        return guess.split(':')[0].strip()
+def load_first_guess(answer_list):
+    """Loads a precomputed first guess if available, otherwise recalculates it"""
+    try:
+        with open("first_turn_entropies.txt", "r") as file:
+            guess = file.readline()
+            return guess.split(':')[0].strip()
+    except FileNotFoundError:
+        return return_guess(load_answers())
 
 
 def filter_answers(guess, pattern, wordlist):
     """Filters answers for just words that match the given guess & pattern"""
-    
+
     return [a for a in wordlist if generate_pattern(guess, a) == pattern]
 
 
 def pattern_feedback(pattern, guess):
     """Returns the coloured text block output for a given guess and pattern"""
-    
+
     feedback = ""
     for i in range(5):
 
@@ -78,7 +82,7 @@ def calculate_entropy(distribution_dict):
     probabilities = [x/total for x in observations]
     entropy = -sum([p*np.log2(p) for p in probabilities])
     return entropy
-    
+
 
 def generate_entropy_dict(possible_answers):
     """Generates a dictionary of entropies for all legal guesses given a
